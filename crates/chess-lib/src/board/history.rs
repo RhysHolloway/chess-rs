@@ -39,6 +39,10 @@ impl BoardHistory {
         }).rev().chain(core::iter::once(pos))
     }
 
+    pub fn reset(&mut self) {
+        self.moves.clear();
+    }
+
     // pub fn of(&self, piece: &BoardPiece) -> impl Iterator<Item = &Move> {
         // self.moves.iter().rev().fold(piece.position, |current, mov| )
     // }

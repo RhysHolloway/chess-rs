@@ -15,6 +15,7 @@ pub fn run(mut io: Reader) -> Vec<MoveError> {
     let mut board = Board::default();
     let mut errors = Vec::new();
     let mut input = String::new();
+    println!("Chess engine running... Type \"help\" for commands");
     while io.read_line(&mut input) {
         match input.trim() {
             "exit" => break,
@@ -28,7 +29,15 @@ pub fn run(mut io: Reader) -> Vec<MoveError> {
                     }
                     println!();
                 });
-            }
+            },
+            "reset" => {
+                board.reset();
+            },
+            "help" => {
+                println!("Commands: exit, print, taken, reset, help");
+                println!("To see the status of a piece, type its position (e.g. \"a1\")");
+                println!("To move a piece, type the move (e.g. \"e2 e4\")");
+            },
             line => {
                 match ParsePositions::parse(line) {
                     ParsePositions::Move(mov) => match board.move_piece(mov) {

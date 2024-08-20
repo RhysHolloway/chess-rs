@@ -62,6 +62,12 @@ impl Board {
         })
     }
 
+    pub fn reset(&mut self) {
+        self.state.reset();
+        self.pieces.reset();
+        self.history.reset();
+    }
+
 }
 
 #[derive(Default, Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
@@ -88,6 +94,10 @@ pub struct State {
 impl State {
     pub fn check(&self) -> Option<&Vec<Move>> {
         self.check.as_ref()
+    }
+
+    pub fn reset(&mut self) {
+        *self = Self::default();
     }
 }
 

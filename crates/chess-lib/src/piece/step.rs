@@ -27,10 +27,6 @@ pub fn occupied(board: &Board, mov: Pos) -> bool {
     board.pieces.at(&mov).is_some()
 }
 
-// pub fn empty_or_take(board: &Board, mov: Pos, side: Side) -> bool {
-//     empty(board, mov) || take(board, mov, side)
-// }
-
 pub struct MultiStep<const DIR: bool, const DIAG: bool>;
 
 #[allow(non_upper_case_globals)]
@@ -54,8 +50,6 @@ const DIRECTIONS: [Pos; 8] = [
 
 impl<const DIR: bool, const DIAG: bool> PieceStep for MultiStep<DIR, DIAG> {
     
-    // const LIMIT: Option<PosInt> = None;
-
     fn once(&self) -> bool {
         false
     }
@@ -80,8 +74,6 @@ const KNIGHT_STEPS: [Pos; 8] = [
 
 impl PieceStep for KnightStep {
 
-    // const LIMIT: Option<PosInt> = Some(1);
-    
     
     fn directions(&self) -> Iter<'static, Pos> {
         KNIGHT_STEPS.iter()

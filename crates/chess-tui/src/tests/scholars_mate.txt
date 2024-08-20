@@ -1,0 +1,10 @@
+e2 e4
+e7 e5
+f1 c4
+h7 h6
+d1 f3
+h6 h5
+print
+f3 f7
+print
+exit

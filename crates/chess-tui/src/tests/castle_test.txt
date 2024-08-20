@@ -1,0 +1,10 @@
+d2 d4
+d7 d6
+b1 a3
+d6 d5
+c1 f4
+g7 g6
+d1 d3
+g6 g5
+e1 b1
+exit

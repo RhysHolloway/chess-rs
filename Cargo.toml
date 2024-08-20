@@ -1,0 +1,13 @@
+[workspace]
+resolver = "2"
+members = ["crates/*"]
+default-members = ["crates/chess-tui"]
+[workspace.dependencies]
+chess-lib = { path = "crates/chess-lib" }
+
+[profile.release]
+opt-level = 'z'
+lto = true
+codegen-units = 1
+panic = 'abort'
+strip = true

@@ -5,3 +5,7 @@ edition = "2021"
 
 [dependencies]
 # hashbrown = "0.14"
+serde = { optional = true, workspace = true }
+
+[features]
+# default = ["serde"]

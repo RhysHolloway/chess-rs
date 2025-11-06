@@ -1,30 +1,34 @@
 use core::slice::Iter;
 
-use crate::{Board, Move, Pos, Side};
+use crate::{Board, Move, Side, Pos};
 
 pub mod pawn;
 pub mod king;
 
-pub trait PieceStep {
+pub trait PieceStep<S: Side> {
 
     fn once(&self) -> bool;
 
+    /**
+     * Forward is y-positive,
+     * Right is x-positive
+     */
     fn directions(&self) -> Iter<'_, Pos>;
 
     #[allow(unused_variables)]
-    fn condition(&self, board: &Board, mov: Move, side: Side) -> bool {
+    fn condition(&self, board: &Board<S>, mov: Move, side: &S) -> bool {
         true
     }
 
     #[allow(unused_variables)]
-    fn on_move(&self, board: &mut Board, mov: Move, side: Side) {
+    fn on_move(&self, board: &mut Board<S>, mov: Move, side: &S) {
 
     }
 
 }
 
-pub fn occupied(board: &Board, mov: Pos) -> bool {
-    board.pieces.at(&mov).is_some()
+pub fn occupied<S: Side>(board: &Board<S>, mov: Pos) -> bool {
+    board.players.piece_at(&mov).is_some()
 }
 
 pub struct MultiStep<const DIR: bool, const DIAG: bool>;
@@ -48,7 +52,7 @@ const DIRECTIONS: [Pos; 8] = [
     Pos { x: -1, y: 1 }
 ];
 
-impl<const DIR: bool, const DIAG: bool> PieceStep for MultiStep<DIR, DIAG> {
+impl<const DIR: bool, const DIAG: bool, S: Side> PieceStep<S> for MultiStep<DIR, DIAG> {
     
     fn once(&self) -> bool {
         false
@@ -72,7 +76,7 @@ const KNIGHT_STEPS: [Pos; 8] = [
     Pos { x: -1, y: 2 }
 ];
 
-impl PieceStep for KnightStep {
+impl<S: Side> PieceStep<S> for KnightStep {
 
     
     fn directions(&self) -> Iter<'static, Pos> {

@@ -1,20 +1,20 @@
 // use alloc::vec::Vec;
 
-use crate::{BoardPiece, Move, Pos, Side};
+use crate::{Move, Piece, Side, Pos};
 
 
 #[derive(Default)]
-pub struct BoardHistory {
-    moves: Vec<PreviousMove>,
+pub struct BoardHistory<S: Side> {
+    moves: Vec<PreviousMove<S>>,
 }
 
-pub struct PreviousMove {
+pub struct PreviousMove<S: Side> {
     pub mov: Move,
-    pub taken: Option<BoardPiece>,
+    pub taken: Option<(S, Piece)>,
 }
 
-impl BoardHistory {
-    pub fn add(&mut self, mov: Move, taken: Option<BoardPiece>) {
+impl<S: Side> BoardHistory<S> {
+    pub fn add(&mut self, mov: Move, taken: Option<(S, Piece)>) {
         self.moves.push(PreviousMove { mov, taken });
     }
 
@@ -22,8 +22,8 @@ impl BoardHistory {
     //     self.moves.pop().map(f)
     // }
 
-    pub fn taken(&self, side: Side) -> impl Iterator<Item = &BoardPiece> {
-        self.moves.iter().filter_map(move |piece| piece.taken.as_ref().filter(|piece| piece.side == side))
+    pub fn taken<'a>(&'a self, side: &'a S) -> impl Iterator<Item = &'a (S, Piece)> + 'a {
+        self.moves.iter().filter_map(move |piece| piece.taken.as_ref().filter(|(other, ..)| other == side))
     }
 
     pub fn of(&self, pos: Pos) -> impl Iterator<Item = Pos> + '_ {

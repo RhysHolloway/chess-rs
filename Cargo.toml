@@ -1,9 +1,11 @@
 [workspace]
 resolver = "2"
 members = ["crates/*"]
-default-members = ["crates/chess-tui"]
+default-members = ["crates/*"]
 [workspace.dependencies]
 chess-lib = { path = "crates/chess-lib" }
+chess-tui = { path = "crates/chess-tui" }
+serde = { version = "1.0", features = ["derive"] }
 
 [profile.release]
 opt-level = 'z'

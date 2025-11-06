@@ -9,8 +9,8 @@ pub enum Reader {
 
 impl Reader {
 
-    pub fn new(mut args: impl Iterator<Item = String>) -> Self {
-        match args.next() {
+    pub fn new(args: &Vec<String>) -> Self {
+        match args.iter().find(|arg| !arg.starts_with("--")) {
             Some(arg) => Self::File(BufReader::new(File::open(arg).expect("Could not read provided file!"))),
             None => Self::Stdin(std::io::stdin()),
         }

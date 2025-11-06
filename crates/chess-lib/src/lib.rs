@@ -3,8 +3,10 @@
 
 mod board;
 mod piece;
-mod util;
+mod side;
+mod pos;
 
-pub use util::*;
+pub use pos::*;
+pub use side::*;
 pub use board::*;
 pub use piece::*;

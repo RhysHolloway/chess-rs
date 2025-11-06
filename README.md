@@ -4,6 +4,14 @@ I created a local terminal interface and attempted an implementation at a server
 
 Both normal chess games and Chess360 games are supported. To play a Chess360 game, run the application with the `--360` flag.
 
+## Testing
+
+Specific moves are tested using unit tests. To run the tests, use the following command:
+
+```bash
+cargo test --package chess-tui
+```
+
 ## Images
 
 ![image](example.png)

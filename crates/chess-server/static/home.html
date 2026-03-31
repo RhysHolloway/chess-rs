@@ -1,0 +1,100 @@
+<!-- static/404.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Home</title>
+    <style>
+        body {
+            background-color: #f8f8f8;
+            font-family: Arial, sans-serif;
+            font-size: 16px;
+            color: #333;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            text-align: center;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: #fff;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        h1 {
+            font-size: 48px;
+            margin-bottom: 20px;
+            color: #333;
+        }
+        p {
+            font-size: 24px;
+            margin-bottom: 40px;
+        }
+
+        #chess-board {border:solid 3px black; background:#eee; display:inline-flex; flex-wrap: wrap;}
+
+        .square {
+        width: 75px; height: 75px; margin: 0; padding: 0; 
+        border: 0; max-width: 12.5%; text-align: center;
+        display: inline-block;
+        }
+
+        .square.white,
+        .chess-piece i.black {background: white;}
+        .square.black,
+        .chess-piece i.white {background: black;}
+
+        .chess-piece i.black {color: black !important; border:solid 1px black;}
+        .chess-piece i.white {color: white !important; border:solid 1px white;}
+
+        .chess-piece i {
+        padding: 1rem; font-size: 1.5rem; margin-top: 0.5rem;
+        border-radius: 50%; width: 25px; height: 25px; max-width: 90%;
+        }
+
+        .square.piece-selected {background-color: yellow !important;}
+
+        .square.square-selected {background: orange !important;}
+
+        .square.capturable-selected {background: red !important;}
+
+        .chess-panel {padding: 0.5rem; margin: 1rem auto;}
+        .chess-panel-header {text-align:center;}
+        .chess-panel.white {background: white;}
+        .chess-panel.black {background: black;}
+        .white-text {color: white;}
+        .taken-pieces {padding: 0.5rem;}
+        .chess-panel.white .taken-pieces {border: solid 1px black;}
+        .chess-panel.black .taken-pieces {border: solid 1px white;}
+
+        .taken-pieces .chess-piece {
+        display: inline-block;
+        vertical-align: middle;
+        margin: 0 8px 8px 0;
+        height: 70px;
+        width: 70px;
+        text-align: center;
+        }
+
+        @media screen and (max-width:1024px) {
+        .chess-piece i {
+            margin-top: 0.5rem; width: 15px; height: 15px;
+            padding: 0.3rem; line-height: 0.5;
+        }
+        .square {height: 80px; width: 80px;}
+        }
+
+    </style>
+</head>
+<body>
+<div>
+    <div>
+        <h1>Search for Game</h1>
+    </div>
+    <div>
+        <h1>Create Game</h1>
+    </div>
+</div>
+<div id="chess-board">
+</div>
+</body>
+</html>

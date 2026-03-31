@@ -25,9 +25,9 @@ pub enum Direction {
 pub trait Rectangle {
     fn contains(&self, pos: &Pos) -> bool;
 
-    fn iter(&self) -> impl Iterator<Item = Pos> + '_;
+    fn iter(&self) -> impl DoubleEndedIterator<Item = Pos> + '_;
 
-    fn enumerate(&self) -> impl Iterator<Item = (PosInt, Pos)> + '_ {
+    fn enumerate(&self) -> impl DoubleEndedIterator<Item = (PosInt, Pos)> + '_ {
         self.iter().enumerate().map(|(i, pos)| (i as PosInt, pos))
     }
 }
@@ -53,23 +53,23 @@ pub struct Move {
 
 impl Pos {
 
-    // pub const fn directions() -> [Self; 4] {
-    //     [
-    //         Self { x: 1, y: 0 },
-    //         Self { x: -1, y: 0 },
-    //         Self { x: 0, y: 1 },
-    //         Self { x: 0, y: -1 },
-    //     ]
-    // }
+    pub const fn directions() -> [Self; 4] {
+        [
+            Self { x: 1, y: 0 },
+            Self { x: -1, y: 0 },
+            Self { x: 0, y: 1 },
+            Self { x: 0, y: -1 },
+        ]
+    }
 
-    // pub const fn diagonals() -> [Self; 4] {
-    //     [
-    //         Self { x: 1, y: 1 },
-    //         Self { x: -1, y: -1 },
-    //         Self { x: -1, y: 1 },
-    //         Self { x: 1, y: -1 },
-    //     ]
-    // }
+    pub const fn diagonals() -> [Self; 4] {
+        [
+            Self { x: 1, y: 1 },
+            Self { x: -1, y: -1 },
+            Self { x: -1, y: 1 },
+            Self { x: 1, y: -1 },
+        ]
+    }
     
     pub const fn max(&self) -> PosInt  {
         if self.x > self.y { self.x } else { self.y }
@@ -82,7 +82,15 @@ impl Pos {
     pub const fn is_diagonal(self) -> bool {
         self.x.abs() == self.y.abs()
     }
-    
+
+    pub const fn normalize(self) -> Self {
+        let max = self.max().abs();
+        match max == 0 {
+            true => Self { x: 0, y: 0 },
+            false => Self { x: self.x / max, y: self.y / max },
+        }
+    }
+
     pub fn rotate(&self, forward: Direction) -> Pos {
         match forward {
             Direction::XPos => Pos { x: self.y, y: -self.x },
@@ -106,11 +114,11 @@ impl Rectangle for Line {
         }
     }
 
-    fn iter(&self) -> impl Iterator<Item = Pos> + '_ {
+    fn iter(&self) -> impl DoubleEndedIterator<Item = Pos> + '_ {
         (0..self.length as PosInt).map(move |i| self.start + self.direction * i)
     }
 
-    fn enumerate(&self) -> impl Iterator<Item = (PosInt, Pos)> + '_ {
+    fn enumerate(&self) -> impl DoubleEndedIterator<Item = (PosInt, Pos)> + '_ {
         (0..self.length as PosInt).map(move |i| (i, self.start + self.direction * i))
     }
 
@@ -122,7 +130,7 @@ impl Rectangle for PosBox {
         pos.x >= self.min.x && pos.x < self.max.x && pos.y >= self.min.y && pos.y < self.max.y
     }
     
-    fn iter(&self) -> impl Iterator<Item = Pos> + '_ {
+    fn iter(&self) -> impl DoubleEndedIterator<Item = Pos> + '_ {
         (self.min.x..self.max.x).flat_map(move |x| (self.min.y..self.max.y).map(move |y| Pos { x, y }))
     }
 

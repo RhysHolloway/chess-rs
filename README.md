@@ -1,3 +1,5 @@
+See previous commit for finished terminal application
+
 # Terminal Chess App
 
 I created a local terminal interface and attempted an implementation at a server-client architecture for playing chess games. The terminal interface is basic but functional, allowing users to play chess games in the terminal. The server-client architecture is a work in progress, with the server handling game logic and the client managing user interactions.

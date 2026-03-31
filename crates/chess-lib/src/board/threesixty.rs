@@ -1,63 +1,5 @@
 use crate::{Direction, Line, Piece, Pos, PosBox, Rectangle, Side};
 
-#[derive(Default, Debug, Clone, Copy, PartialEq, Eq, Hash, PartialOrd, Ord)]
-#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize), serde(rename_all = "lowercase"))]
-pub enum DefaultSides {
-    #[default]
-    White, 
-    Black
-}
-
-impl Side for DefaultSides {
-    
-    fn dimensions() -> impl IntoIterator<Item = &'static PosBox> {
-        [&PosBox { min: Pos { x: 0, y: 0 }, max: Pos { x: 8, y: 8 } }]
-    }
-
-    fn origin(&self) -> &(impl Rectangle + '_) {
-        match self {
-            Self::White => &Line { start: Pos { x: 0, y: 0 }, direction: Direction::XPos, length: 8 },
-            Self::Black => &Line { start: Pos { x: 0, y: 7 }, direction: Direction::XPos, length: 8 },
-        }
-    }
-
-    fn forward(&self) -> Direction {
-        match self {
-            Self::White => Direction::YPos,
-            Self::Black => Direction::YNeg,
-        }
-    }
-
-    fn first(&self) -> bool {
-        matches!(self, Self::White)
-    }
-
-    fn next(&mut self) {
-        *self = match self {
-            DefaultSides::White => Self::Black,
-            DefaultSides::Black => Self::White,
-        }
-    }
-    
-    fn pieces(&self) -> impl Iterator<Item = (Pos, Piece)> {
-        self.origin().iter().flat_map(move |pos| [match pos.x {
-            0 | 7 => (pos, Piece::Rook),
-            1 | 6 => (pos, Piece::Knight),
-            2 | 5 => (pos, Piece::Bishop),
-            3 => (pos, Piece::Queen),
-            4 => (pos, Piece::King),
-            ..0 | 8.. => unreachable!(),
-        }, (pos + self.forward(), Piece::Pawn)])
-    }
-
-}
-
-impl std::fmt::Display for DefaultSides {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        std::fmt::Debug::fmt(&self, f)
-    }
-}
-
 #[derive(Default, Debug, Clone, Copy, PartialEq, Eq, Hash)]
 pub enum Chess360 {
     #[default]
@@ -68,7 +10,7 @@ pub enum Chess360 {
 }
 
 impl Side for Chess360 {
-    fn dimensions() -> impl IntoIterator<Item = &'static PosBox> {
+    fn dimensions() -> impl IntoIterator<Item = &'static (impl Rectangle + 'static)> {
         [
             &PosBox { min: Pos { x: 4, y: 4 }, max: Pos { x: 12, y: 12 } }, // center
             &PosBox { min: Pos { x: 4, y: 0 }, max: Pos { x: 12, y: 4 } }, // red
@@ -81,9 +23,9 @@ impl Side for Chess360 {
     fn origin(&self) -> &(impl Rectangle + '_) {
         match self {
             Self::Red => &Line { start: Pos { x: 4, y: 0 }, direction: Direction::XPos, length: 8 },
-            Self::Blue => &Line { start: Pos { x: 4, y: 15 }, direction: Direction::XPos, length: 8 },
+            Self::Blue => &Line { start: Pos { x: 12, y: 15 }, direction: Direction::XNeg, length: 8 },
             Self::Green => &Line { start: Pos { x: 0, y: 4 }, direction: Direction::YPos, length: 8 },
-            Self::Yellow => &Line { start: Pos { x: 15, y: 4 }, direction: Direction::YPos, length: 8 },
+            Self::Yellow => &Line { start: Pos { x: 15, y: 12 }, direction: Direction::YNeg, length: 8 },
         }
     }
 
